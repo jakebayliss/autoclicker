@@ -1,0 +1,11 @@
+C:\Code\AutoClicker\AutoClicker\bin\Debug\netcoreapp2.1\AutoClicker.deps.json
+C:\Code\AutoClicker\AutoClicker\bin\Debug\netcoreapp2.1\AutoClicker.runtimeconfig.json
+C:\Code\AutoClicker\AutoClicker\bin\Debug\netcoreapp2.1\AutoClicker.runtimeconfig.dev.json
+C:\Code\AutoClicker\AutoClicker\bin\Debug\netcoreapp2.1\AutoClicker.dll
+C:\Code\AutoClicker\AutoClicker\obj\Debug\netcoreapp2.1\AutoClicker.csprojAssemblyReference.cache
+C:\Code\AutoClicker\AutoClicker\obj\Debug\netcoreapp2.1\AutoClicker.csproj.CoreCompileInputs.cache
+C:\Code\AutoClicker\AutoClicker\obj\Debug\netcoreapp2.1\AutoClicker.AssemblyInfoInputs.cache
+C:\Code\AutoClicker\AutoClicker\obj\Debug\netcoreapp2.1\AutoClicker.AssemblyInfo.cs
+C:\Code\AutoClicker\AutoClicker\bin\Debug\netcoreapp2.1\AutoClicker.pdb
+C:\Code\AutoClicker\AutoClicker\obj\Debug\netcoreapp2.1\AutoClicker.dll
+C:\Code\AutoClicker\AutoClicker\obj\Debug\netcoreapp2.1\AutoClicker.pdb
