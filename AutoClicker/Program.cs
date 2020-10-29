@@ -1,12 +1,14 @@
 ﻿using System;
 using WindowsInput;
 using System.Timers;
+using WindowsInput.Native;
+using System.Threading;
 
 namespace AutoClicker
 {
     class Program
     {
-        private static Timer timer;
+        private static System.Timers.Timer timer;
         private static InputSimulator simulator = new InputSimulator();
         private static string e;
         private static int counter = 0;
@@ -27,7 +29,10 @@ namespace AutoClicker
         private static void Action()
         {
             var input = Console.ReadLine().Split(' ');
-            stopCount = input[2] != null ? double.Parse(input[2]) : 1/ counter;
+            if (input.Length == 3)
+            {
+                stopCount = input[2] != null ? double.Parse(input[2]) : 1 / counter;
+            }
             while (true)
             {
                 e = input[0];
@@ -40,14 +45,27 @@ namespace AutoClicker
                 {
                     if (ValidateEvent(e))
                     {
-                        SetTimer(int.Parse(input[1]));
-                        // End program
-                        var end = Console.ReadKey();
-                        if(end.Key.ToString() == "Enter")
+                        if(e == "d")
                         {
-                            timer.Stop();
+                            DropEverything();
+                            Console.WriteLine("Done");
+                            var end = Console.ReadLine();
+                        }
+                        else if(input.Length == 1 && e == "r")
+                        {
+                            simulator.Mouse.RightButtonDown();
+                        }
+                        else
+                        {
+                            SetTimer(int.Parse(input[1]));
+                            // End program
+                            var end = Console.ReadKey();
+                            if (end.Key.ToString() == "Enter")
+                            {
+                                timer.Stop();
 
-                            Console.WriteLine("Action stopped");
+                                Console.WriteLine("Action stopped");
+                            }
                         }
                     }
                     else
@@ -60,7 +78,7 @@ namespace AutoClicker
 
         private static void SetTimer(int interval)
         {
-            timer = new Timer(interval);
+            timer = new System.Timers.Timer(interval);
             timer.Elapsed += OnTimedEvent;
             timer.AutoReset = true;
             timer.Enabled = true;
@@ -68,9 +86,12 @@ namespace AutoClicker
 
         private static void OnTimedEvent(Object source, ElapsedEventArgs ev)
         {
-            if (counter >= stopCount)
+            if(stopCount > 0)
             {
-                return;
+                if (counter >= stopCount)
+                {
+                    return;
+                }
             }
             switch (e)
             {
@@ -80,22 +101,49 @@ namespace AutoClicker
                 case "ldc":
                     simulator.Mouse.LeftButtonDoubleClick();
                     break;
+                case "rc":
+                    simulator.Mouse.RightButtonClick();
+                    break;
             }
 
             counter++;
             Console.WriteLine("Clicked " + counter + " times");
         }
 
+        private static void DropEverything()
+        {
+            simulator.Mouse.LeftButtonClick(); //Focus the window
+            simulator.Keyboard.KeyDown((VirtualKeyCode)16);
+
+            for (int i = 0; i < 7; i++)
+            {
+                for(int j = 0; j < 3; j++)
+                {
+                    simulator.Mouse.LeftButtonClick();
+                    Thread.Sleep(100);
+                    simulator.Mouse.MoveMouseBy(60, 0);
+                    Thread.Sleep(100); // can only drop 1 item per game tick
+                }
+                simulator.Mouse.LeftButtonClick();
+                Thread.Sleep(100);
+                if(i < 6) {
+                    simulator.Mouse.MoveMouseBy(-180, 50);
+                }
+            }
+            simulator.Keyboard.KeyUp((VirtualKeyCode)16);
+        }
+
         private static bool ValidateEvent(string e)
         {
-            return e == "lc" || e == "ldc";
+            return e == "lc" || e == "ldc" || e == "rc" || e == "r" || e == "d";
         }
 
         private static void ShowHelp()
         {
-            Console.WriteLine("Action are:");
+            Console.WriteLine("Actions are:");
             Console.WriteLine("Left Click: lc");
             Console.WriteLine("Left Double Click: ldc");
+            Console.WriteLine("Drop everything: d");
         }
     }
 }
